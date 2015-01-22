@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Lista Dinamica</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <!--menu tela minhas listas-->
+    <string name="adicionarLista">Adicionar Lista</string>
+
+    <!--Botoes da composicao de itens-->
+    <string name="criarLista">Criar Lista</string>
+    <string name="cancelar">Cancelar</string>
+
+
+</resources>
