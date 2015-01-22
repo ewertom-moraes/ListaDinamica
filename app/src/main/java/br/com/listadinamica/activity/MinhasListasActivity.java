@@ -22,7 +22,7 @@ public class MinhasListasActivity extends ActionBarActivity {
     TextView texto;
     TextView monetario;
 
-
+    // comit pelo logan. 22/01/2015 as 13;17 ... alalalal
     /**
      * abre um modal com opções de widgets para
      * composição dos itens da nova lista.
