@@ -10,17 +10,22 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import br.com.listadinamica.dao.ListaDAO;
+import br.com.listadinamica.model.Item;
+import br.com.listadinamica.model.Lista;
+
 
 public class MinhasListasActivity extends ActionBarActivity {
 
     private AlertDialog alerta;
     boolean [] checks = {false, false};
-    String [] tiposItens = {"Texto", "Monetário"};
-    Item composicaoItens = new Item();
+    String [] tiposItens = {"Texto", "Numero"};
+    Lista composicaoLista = new Lista();
+    ListaDAO listaDao;
     ArrayList<Object> listaItensEscolhidos= new ArrayList<>();
 
     TextView texto;
-    TextView monetario;
+    TextView numero;
 
     // comit pelo logan. 22/01/2015 as 13;17 ... alalalal
     /**
@@ -33,7 +38,7 @@ public class MinhasListasActivity extends ActionBarActivity {
         builder.setTitle("Composicao dos Itens");
         builder.setPositiveButton(R.string.criarLista,new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                montaLista();
+                criaLista();
             }
         });
         builder.setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
@@ -49,11 +54,11 @@ public class MinhasListasActivity extends ActionBarActivity {
                         if(isChecked) {
                             switch (which) {
                                 case 0: //cria EditText para os iten
-                                    composicaoItens.setTexto(true);
+                                    composicaoLista.setIsTexto(1);
                                     checks[0] = true;
                                     break;
                                 case 1: // cria double para os itens
-                                    composicaoItens.setMonetario(true);
+                                    composicaoLista.setIsNumero(1);
                                     checks[1] = true;
                                     break;
                             }
@@ -63,17 +68,28 @@ public class MinhasListasActivity extends ActionBarActivity {
          builder.show();
     }
 
-    private void montaLista() {
+    private void criaLista() {
+
+        composicaoLista.setNome("nova lista");
+
+        long resultado = listaDao.salvarUsuario(composicaoLista);
+
+        if(resultado != -1){
+            System.out.print("salvo lista com sucesso");
+        }
+    }
+
+    private void montaListaTeste() {
         //implementacao teste: criar os widgets nesta mesma actiity
-        if(composicaoItens.isTexto()){
+        if(composicaoLista.getIsNumero()==1){
             texto = new TextView(this);
             texto.setText("texto");
             setContentView(texto);
         }
-        if(composicaoItens.isMonetario()){
-            monetario = new TextView(this);
-            monetario.setText("monetario");
-            setContentView(monetario);
+        if(composicaoLista.getIsNumero()==1){
+            numero = new TextView(this);
+            numero.setText("numero");
+            setContentView(numero);
         }
     }
 
@@ -84,8 +100,8 @@ public class MinhasListasActivity extends ActionBarActivity {
                 listaItensEscolhidos.add(texto);
                 break;
             case 1 :
-                monetario = new TextView(this);
-                listaItensEscolhidos.add(monetario);
+                numero = new TextView(this);
+                listaItensEscolhidos.add(numero);
                 break;
         }
     }
@@ -94,6 +110,7 @@ public class MinhasListasActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_minhas_listas);
+        listaDao = new ListaDAO(this);
 
     }
 

@@ -11,6 +11,8 @@ public class Lista {
     private Integer isNumero;
     private Integer isData;
 
+    public Lista(){}
+
     public Lista(Integer _id, String nome, Integer isTexto,
                  Integer isNumero, Integer isData){
         this.set_id(_id);
