@@ -26,6 +26,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("create table item(_id integer primary key autoincrement, " +
                 "idLista integer not null,"
                 +" texto text, numero real, data datetime, FOREIGN KEY(idLista) REFERENCES lista(_id))");
+
+        db.execSQL("insert into lista(nome, isTexto, isNumero, isData) values('Nova lista inserida no java', 1, 1, 0)");
     }
 
     @Override

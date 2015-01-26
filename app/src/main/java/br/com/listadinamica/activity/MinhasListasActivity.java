@@ -25,13 +25,13 @@ public class MinhasListasActivity extends ActionBarActivity {
     boolean [] checks = {false, false};
     String [] tiposItens = {"Texto", "Numero"};
     Lista composicaoLista = new Lista();
-    ListaDAO listaDao;
+    ListaDAO listaDaoCriar;
 
     //variaveis para listagem
-    private ListView lista;
+    private ListView lvLista;
     private List<Lista> listaList;
     private ListaAdapter listaAdapter;
-    private ListaDAO listaDAO;
+    private ListaDAO listaDAOLista;
 
 
 
@@ -83,7 +83,7 @@ public class MinhasListasActivity extends ActionBarActivity {
 
         composicaoLista.setNome("nova lista");
 
-        long resultado = listaDao.salvarLista(composicaoLista);
+        long resultado = listaDaoCriar.salvarLista(composicaoLista);
 
         if(resultado != -1){
             System.out.print("salvo lista com sucesso");
@@ -111,16 +111,14 @@ public class MinhasListasActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_minhas_listas);
 
-        listaDao = new ListaDAO(this);
-        if(listaDAO.listarListas()==null){
-            return;
-        }
-        listaList = listaDAO.listarListas();
+       listaDAOLista = new ListaDAO(this);
+
+        listaList = listaDAOLista.listarListas();
 
         listaAdapter = new ListaAdapter(this, listaList);
 
-        lista = (ListView) findViewById(R.id.lvListas);
-        lista.setAdapter(listaAdapter);
+        lvLista = (ListView) findViewById(R.id.lvListas);
+        lvLista.setAdapter(listaAdapter);
 
     }
 

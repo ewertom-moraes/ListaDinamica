@@ -36,8 +36,9 @@ public class ListaDAO {
             cursor.getInt(cursor.getColumnIndex(DatabaseHelper.Lista._ID)),
             cursor.getString(cursor.getColumnIndex(DatabaseHelper.Lista.NOME)),
             cursor.getInt(cursor.getColumnIndex(DatabaseHelper.Lista.ISTEXTO)),
-            cursor.getInt(cursor.getColumnIndex(DatabaseHelper.Lista.ISNUMERO)
-            //cursor.getInt(cursor.getColumnIndex(DatabaseHelper.Lista.ISDATA))
+            cursor.getInt(cursor.getColumnIndex(DatabaseHelper.Lista.ISNUMERO)),
+            cursor.getInt(cursor.getColumnIndex(DatabaseHelper.Lista.ISDATA))
+
         );
 
         return model;
@@ -48,7 +49,7 @@ public class ListaDAO {
         valores.put(DatabaseHelper.Lista.NOME, lista.getNome());
         valores.put(DatabaseHelper.Lista.ISTEXTO, lista.getIsTexto());
         valores.put(DatabaseHelper.Lista.ISNUMERO, lista.getIsNumero());
-        //valores.put(DatabaseHelper.Lista.ISDATA, lista.getIsData());
+        valores.put(DatabaseHelper.Lista.ISDATA, lista.getIsData());
 
         if(lista.get_id() != null){
             return getDatabase().update(DatabaseHelper.Lista.TABELA, valores,
@@ -64,12 +65,16 @@ public class ListaDAO {
                 DatabaseHelper.Lista.COLUNAS, null, null, null, null, null);
 
         List<Lista> listas = new ArrayList<Lista>();
+        if(!cursor.moveToFirst()) {
+            return null;
+        }
         while(cursor.moveToNext()){
             Lista model = criaLista(cursor);
             listas.add(model);
         }
         cursor.close();
         return listas;
+
     }
 
 }
