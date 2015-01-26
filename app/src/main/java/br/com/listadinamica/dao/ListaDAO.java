@@ -5,6 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import br.com.listadinamica.model.Lista;
 
 /**
@@ -33,14 +36,14 @@ public class ListaDAO {
             cursor.getInt(cursor.getColumnIndex(DatabaseHelper.Lista._ID)),
             cursor.getString(cursor.getColumnIndex(DatabaseHelper.Lista.NOME)),
             cursor.getInt(cursor.getColumnIndex(DatabaseHelper.Lista.ISTEXTO)),
-            cursor.getInt(cursor.getColumnIndex(DatabaseHelper.Lista.ISNUMERO)),
-            cursor.getInt(cursor.getColumnIndex(DatabaseHelper.Lista.ISDATA))
+            cursor.getInt(cursor.getColumnIndex(DatabaseHelper.Lista.ISNUMERO)
+            //cursor.getInt(cursor.getColumnIndex(DatabaseHelper.Lista.ISDATA))
         );
 
         return model;
     }
 
-    public long salvarUsuario(Lista lista){
+    public long salvarLista(Lista lista){
         ContentValues valores = new ContentValues();
         valores.put(DatabaseHelper.Lista.NOME, lista.getNome());
         valores.put(DatabaseHelper.Lista.ISTEXTO, lista.getIsTexto());
@@ -53,6 +56,20 @@ public class ListaDAO {
         }
 
         return getDatabase().insert(DatabaseHelper.Lista.TABELA, null, valores);
+    }
+
+
+    public List<Lista> listarListas(){
+        Cursor cursor = getDatabase().query(DatabaseHelper.Lista.TABELA,
+                DatabaseHelper.Lista.COLUNAS, null, null, null, null, null);
+
+        List<Lista> listas = new ArrayList<Lista>();
+        while(cursor.moveToNext()){
+            Lista model = criaLista(cursor);
+            listas.add(model);
+        }
+        cursor.close();
+        return listas;
     }
 
 }

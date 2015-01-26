@@ -20,12 +20,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         //Tabela de Lista
         db.execSQL("create table lista(_id integer primary key autoincrement, "
-                +"nome text , isTexto integer, isNumero integer , isData integer )");
+                +"nome text , isTexto integer, isNumero integer , isData integer)");
 
         //Tabela de tarefas
         db.execSQL("create table item(_id integer primary key autoincrement, " +
-                "idLista integer not null, FOREIGN KEY(idLista) REFERENCES lista(_id),"
-                +" texto text, numero real, data datetime)");
+                "idLista integer not null,"
+                +" texto text, numero real, data datetime, FOREIGN KEY(idLista) REFERENCES lista(_id))");
     }
 
     @Override

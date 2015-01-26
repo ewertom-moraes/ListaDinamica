@@ -6,10 +6,13 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import br.com.listadinamica.adapter.ListaAdapter;
 import br.com.listadinamica.dao.ListaDAO;
 import br.com.listadinamica.model.Item;
 import br.com.listadinamica.model.Lista;
@@ -17,12 +20,20 @@ import br.com.listadinamica.model.Lista;
 
 public class MinhasListasActivity extends ActionBarActivity {
 
+    // variaveis para criacao
     private AlertDialog alerta;
     boolean [] checks = {false, false};
     String [] tiposItens = {"Texto", "Numero"};
     Lista composicaoLista = new Lista();
     ListaDAO listaDao;
-    ArrayList<Object> listaItensEscolhidos= new ArrayList<>();
+
+    //variaveis para listagem
+    private ListView lista;
+    private List<Lista> listaList;
+    private ListaAdapter listaAdapter;
+    private ListaDAO listaDAO;
+
+
 
     TextView texto;
     TextView numero;
@@ -72,7 +83,7 @@ public class MinhasListasActivity extends ActionBarActivity {
 
         composicaoLista.setNome("nova lista");
 
-        long resultado = listaDao.salvarUsuario(composicaoLista);
+        long resultado = listaDao.salvarLista(composicaoLista);
 
         if(resultado != -1){
             System.out.print("salvo lista com sucesso");
@@ -93,24 +104,23 @@ public class MinhasListasActivity extends ActionBarActivity {
         }
     }
 
-    private void adicionarTipoLista(int i) {
-        switch (i){
-            case 0 :
-                texto = new TextView(this);
-                listaItensEscolhidos.add(texto);
-                break;
-            case 1 :
-                numero = new TextView(this);
-                listaItensEscolhidos.add(numero);
-                break;
-        }
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_minhas_listas);
+
         listaDao = new ListaDAO(this);
+        if(listaDAO.listarListas()==null){
+            return;
+        }
+        listaList = listaDAO.listarListas();
+
+        listaAdapter = new ListaAdapter(this, listaList);
+
+        lista = (ListView) findViewById(R.id.lvListas);
+        lista.setAdapter(listaAdapter);
 
     }
 

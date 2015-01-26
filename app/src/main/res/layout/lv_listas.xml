@@ -5,14 +5,10 @@
     android:padding="10dp"
     android:background="#FFF">
 
-
-<TextView
-        android:id="@+id/lista_lista_nome"
+    <ListView
+        android:id="@+id/lvListas"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginTop="11dp"/>
+        android:layout_height="match_parent"/>
 
 
 
