@@ -6,6 +6,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,10 +24,12 @@ public class MinhasListasActivity extends ActionBarActivity {
 
     // variaveis para criacao
     private AlertDialog alerta;
-    boolean [] checks = {false, false};
-    String [] tiposItens = {"Texto", "Numero"};
+    private EditText input;
+    boolean [] checks = {false, false, false};
+    String [] tiposItens = {"Texto", "Numero", "Data"};
     Lista composicaoLista = new Lista();
     ListaDAO listaDaoCriar;
+
 
     //variaveis para listagem
     private ListView lvLista;
@@ -43,10 +47,34 @@ public class MinhasListasActivity extends ActionBarActivity {
      * abre um modal com opções de widgets para
      * composição dos itens da nova lista.
      * */
+
+
     public void adicionarLista(){
 
         AlertDialog.Builder builder  = new AlertDialog.Builder(this);
+        builder.setTitle("Nome da Lista");
+        input = new EditText(this);
+        builder.setView(input);
+
+
+        builder.setPositiveButton(R.string.criarLista,new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                adicionarComposicaoLista();
+            }
+        });
+        builder.setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // do nothing
+            }
+        });
+        builder.show();
+    }
+
+     public void adicionarComposicaoLista(){
+
+        AlertDialog.Builder builder  = new AlertDialog.Builder(this);
         builder.setTitle("Composicao dos Itens");
+
         builder.setPositiveButton(R.string.criarLista,new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 criaLista();
@@ -59,18 +87,22 @@ public class MinhasListasActivity extends ActionBarActivity {
         });
 
         builder.setMultiChoiceItems(tiposItens,
-                checks, new DialogInterface.OnMultiChoiceClickListener(){
+                checks, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if(isChecked) {
+                        if (isChecked) {
                             switch (which) {
-                                case 0: //cria EditText para os iten
+                                case 0:
                                     composicaoLista.setIsTexto(1);
                                     checks[0] = true;
                                     break;
-                                case 1: // cria double para os itens
+                                case 1:
                                     composicaoLista.setIsNumero(1);
                                     checks[1] = true;
+                                    break;
+                                case 2:
+                                    composicaoLista.setIsData(1);
+                                    checks[2] = true;
                                     break;
                             }
                         }
@@ -81,45 +113,26 @@ public class MinhasListasActivity extends ActionBarActivity {
 
     private void criaLista() {
 
-        composicaoLista.setNome("nova lista");
-
+        listaDaoCriar = new ListaDAO(this);
+        composicaoLista.setNome(input.getText().toString());
         long resultado = listaDaoCriar.salvarLista(composicaoLista);
-
-        if(resultado != -1){
-            System.out.print("salvo lista com sucesso");
-        }
+        listarListasListView();
     }
 
-    private void montaListaTeste() {
-        //implementacao teste: criar os widgets nesta mesma actiity
-        if(composicaoLista.getIsNumero()==1){
-            texto = new TextView(this);
-            texto.setText("texto");
-            setContentView(texto);
-        }
-        if(composicaoLista.getIsNumero()==1){
-            numero = new TextView(this);
-            numero.setText("numero");
-            setContentView(numero);
-        }
+    public void listarListasListView(){
+        listaDAOLista = new ListaDAO(this);
+        listaList = listaDAOLista.listarListas();
+        listaAdapter = new ListaAdapter(this, listaList);
+        lvLista = (ListView) findViewById(R.id.lvListas);
+        lvLista.setAdapter(listaAdapter);
     }
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_minhas_listas);
 
-       listaDAOLista = new ListaDAO(this);
-
-        listaList = listaDAOLista.listarListas();
-
-        listaAdapter = new ListaAdapter(this, listaList);
-
-        lvLista = (ListView) findViewById(R.id.lvListas);
-        lvLista.setAdapter(listaAdapter);
-
+        listarListasListView();
     }
 
     @Override
@@ -145,4 +158,26 @@ public class MinhasListasActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onDestroy() {
+        listaDAOLista.fechar();
+        listaDaoCriar.fechar();
+        super.onDestroy();
+    }
+
+    private void montaListaTeste() {
+        //implementacao teste: criar os widgets nesta mesma actiity
+        if(composicaoLista.getIsNumero()==1){
+            texto = new TextView(this);
+            texto.setText("texto");
+            setContentView(texto);
+        }
+        if(composicaoLista.getIsNumero()==1){
+            numero = new TextView(this);
+            numero.setText("numero");
+            setContentView(numero);
+        }
+    }
+
 }

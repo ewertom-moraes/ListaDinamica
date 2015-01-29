@@ -66,6 +66,7 @@ public class ListaDAO {
 
         List<Lista> listas = new ArrayList<Lista>();
         if(!cursor.moveToFirst()) {
+            cursor.close();
             return null;
         }
         while(cursor.moveToNext()){
@@ -75,6 +76,11 @@ public class ListaDAO {
         cursor.close();
         return listas;
 
+    }
+
+    public void fechar(){
+        databaseHelper.close();
+        database = null;
     }
 
 }
