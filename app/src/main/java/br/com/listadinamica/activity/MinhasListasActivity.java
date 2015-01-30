@@ -4,12 +4,15 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +24,9 @@ import br.com.listadinamica.model.Lista;
 
 
 public class MinhasListasActivity extends ActionBarActivity {
+
+
+
 
     // variaveis para criacao
     private AlertDialog alerta;
@@ -37,8 +43,6 @@ public class MinhasListasActivity extends ActionBarActivity {
     private ListaAdapter listaAdapter;
     private ListaDAO listaDAOLista;
 
-
-
     TextView texto;
     TextView numero;
 
@@ -47,6 +51,43 @@ public class MinhasListasActivity extends ActionBarActivity {
      * abre um modal com opções de widgets para
      * composição dos itens da nova lista.
      * */
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo){
+
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.setHeaderTitle("Opcoes da Lista");
+        menu.add(0, v.getId(), 0, "Ver Lista");
+        menu.add(0, v.getId(), 1, "Renomear");//groupId, itemId, order, title
+        menu.add(0, v.getId(), 2, "Excluir");
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item){
+
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
+                .getMenuInfo();
+
+        listaDAOLista = new ListaDAO(this);
+        listaList = listaDAOLista.listarListas();
+        Toast.makeText(this,"oi"+ listaList.get(info.position).getNome(), Toast.LENGTH_SHORT).show();
+        switch (item.getItemId()){
+            case 0 :
+                //ver itens por idLista
+                break;
+            case 1 :
+                Toast.makeText(this,"oi"+ listaList.get(info.position).getNome(), Toast.LENGTH_SHORT).show();
+                //listaDAOLista.salvarLista(new Lista());
+                break;
+            case 2 :
+                break;
+            default:
+                return false;
+        }
+
+        return true;
+    }
 
 
     public void adicionarLista(){
@@ -132,8 +173,13 @@ public class MinhasListasActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_minhas_listas);
 
+        lvLista=(ListView)findViewById(R.id.lvListas);
+        // Register the ListView  for Context menu
+        registerForContextMenu(lvLista);
         listarListasListView();
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
