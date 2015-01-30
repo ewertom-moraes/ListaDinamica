@@ -78,6 +78,19 @@ public class ListaDAO {
 
     }
 
+    public Lista buscarUsuarioPorId(int id){
+        Cursor cursor = getDatabase().query(DatabaseHelper.Lista.TABELA,
+                DatabaseHelper.Lista.COLUNAS, "_id = ?", new String[]{ Integer.toString(id) }, null, null, null);
+
+        if(!cursor.moveToNext()){
+            return null;
+        }
+        Lista model = criaLista(cursor);
+        cursor.close();
+        return model;
+
+    }
+
     public void fechar(){
         databaseHelper.close();
         database = null;

@@ -8,8 +8,9 @@
     <!--menu tela minhas listas-->
     <string name="adicionarLista">Adicionar Lista</string>
 
-    <!--Botoes da composicao de itens-->
+    <!--Botoes-->
     <string name="criarLista">Criar Lista</string>
+    <string name="renomearLista">Renomear</string>
     <string name="cancelar">Cancelar</string>
 
 

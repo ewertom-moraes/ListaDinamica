@@ -71,13 +71,15 @@ public class MinhasListasActivity extends ActionBarActivity {
 
         listaDAOLista = new ListaDAO(this);
         listaList = listaDAOLista.listarListas();
-        Toast.makeText(this,"oi"+ listaList.get(info.position).getNome(), Toast.LENGTH_SHORT).show();
-        switch (item.getItemId()){
+        Lista listaEditar = listaDAOLista.buscarUsuarioPorId(listaList.get(info.position).get_id());
+        switch (item.getOrder()){
             case 0 :
                 //ver itens por idLista
                 break;
             case 1 :
-                Toast.makeText(this,"oi"+ listaList.get(info.position).getNome(), Toast.LENGTH_SHORT).show();
+                //abreAlertDialog com input renomearLista()
+                renomearLista(listaEditar);
+                //Toast.makeText(this,"oi"+ listaList.get(info.position).getNome(), Toast.LENGTH_SHORT).show();
                 //listaDAOLista.salvarLista(new Lista());
                 break;
             case 2 :
@@ -87,6 +89,29 @@ public class MinhasListasActivity extends ActionBarActivity {
         }
 
         return true;
+    }
+
+    private void renomearLista(final Lista lista) {
+        AlertDialog.Builder builderRenomear  = new AlertDialog.Builder(this);
+        builderRenomear.setTitle("Editar Nome da Lista");
+        input = new EditText(this);
+        input.setText(lista.getNome());
+        builderRenomear.setView(input);
+
+        builderRenomear.setPositiveButton(R.string.renomearLista,new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                lista.setNome(input.getText().toString());
+                listaDAOLista.salvarLista(lista);
+                listarListasListView();
+            }
+        });
+        builderRenomear.setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // do nothing
+            }
+        });
+        builderRenomear.show();
+
     }
 
 
@@ -135,15 +160,12 @@ public class MinhasListasActivity extends ActionBarActivity {
                             switch (which) {
                                 case 0:
                                     composicaoLista.setIsTexto(1);
-                                    checks[0] = true;
                                     break;
                                 case 1:
                                     composicaoLista.setIsNumero(1);
-                                    checks[1] = true;
                                     break;
                                 case 2:
                                     composicaoLista.setIsData(1);
-                                    checks[2] = true;
                                     break;
                             }
                         }
@@ -163,6 +185,8 @@ public class MinhasListasActivity extends ActionBarActivity {
     public void listarListasListView(){
         listaDAOLista = new ListaDAO(this);
         listaList = listaDAOLista.listarListas();
+        if(listaList.isEmpty())
+            return;
         listaAdapter = new ListaAdapter(this, listaList);
         lvLista = (ListView) findViewById(R.id.lvListas);
         lvLista.setAdapter(listaAdapter);
