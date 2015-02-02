@@ -91,6 +91,11 @@ public class ListaDAO {
 
     }
 
+    public boolean removerLista(int id){
+        return getDatabase().delete(DatabaseHelper.Lista.TABELA,
+                "_id = ?", new String[]{ Integer.toString(id) }) > 0;
+    }
+
     public void fechar(){
         databaseHelper.close();
         database = null;

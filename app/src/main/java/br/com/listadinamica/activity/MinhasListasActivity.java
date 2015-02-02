@@ -2,6 +2,7 @@ package br.com.listadinamica.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -21,6 +22,7 @@ import br.com.listadinamica.adapter.ListaAdapter;
 import br.com.listadinamica.dao.ListaDAO;
 import br.com.listadinamica.model.Item;
 import br.com.listadinamica.model.Lista;
+import br.com.listadinamica.util.Util;
 
 
 public class MinhasListasActivity extends ActionBarActivity {
@@ -34,14 +36,14 @@ public class MinhasListasActivity extends ActionBarActivity {
     boolean [] checks = {false, false, false};
     String [] tiposItens = {"Texto", "Numero", "Data"};
     Lista composicaoLista = new Lista();
-    ListaDAO listaDaoCriar;
+    private ListaDAO listaDAO;
 
 
     //variaveis para listagem
     private ListView lvLista;
     private List<Lista> listaList;
     private ListaAdapter listaAdapter;
-    private ListaDAO listaDAOLista;
+
 
     TextView texto;
     TextView numero;
@@ -61,6 +63,8 @@ public class MinhasListasActivity extends ActionBarActivity {
         menu.add(0, v.getId(), 1, "Renomear");//groupId, itemId, order, title
         menu.add(0, v.getId(), 2, "Excluir");
 
+
+
     }
 
     @Override
@@ -69,20 +73,28 @@ public class MinhasListasActivity extends ActionBarActivity {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
                 .getMenuInfo();
 
-        listaDAOLista = new ListaDAO(this);
-        listaList = listaDAOLista.listarListas();
-        Lista listaEditar = listaDAOLista.buscarUsuarioPorId(listaList.get(info.position).get_id());
+        listaDAO = new ListaDAO(this);
+        listaList = listaDAO.listarListas();
+        Lista listaEditar = listaDAO.buscarUsuarioPorId(listaList.get(info.position).get_id());
+       // Util.alerta(this, listaEditar.get_id() +", " + listaEditar.getNome()
+       //   + ", "+listaEditar.getIsTexto() + ", "+listaEditar.getIsNumero() + ", "+listaEditar.getIsData());
         switch (item.getOrder()){
             case 0 :
-                //ver itens por idLista
+                Intent intent = getIntent().setClass(MinhasListasActivity.this, ItemActivity.class);
+                intent.putExtra("idLista", listaEditar.get_id());
+                intent.putExtra("nome", listaEditar.getNome());
+                intent.putExtra("isTexto", listaEditar.getIsTexto());
+                intent.putExtra("isNumero", listaEditar.getIsNumero());
+                intent.putExtra("isData", listaEditar.getIsData());
+                startActivity(intent);
+                finish();
                 break;
             case 1 :
-                //abreAlertDialog com input renomearLista()
                 renomearLista(listaEditar);
-                //Toast.makeText(this,"oi"+ listaList.get(info.position).getNome(), Toast.LENGTH_SHORT).show();
-                //listaDAOLista.salvarLista(new Lista());
                 break;
             case 2 :
+                listaDAO.removerLista(listaEditar.get_id());
+                listarListasListView();
                 break;
             default:
                 return false;
@@ -101,7 +113,7 @@ public class MinhasListasActivity extends ActionBarActivity {
         builderRenomear.setPositiveButton(R.string.renomearLista,new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 lista.setNome(input.getText().toString());
-                listaDAOLista.salvarLista(lista);
+                listaDAO.salvarLista(lista);
                 listarListasListView();
             }
         });
@@ -136,7 +148,7 @@ public class MinhasListasActivity extends ActionBarActivity {
         builder.show();
     }
 
-     public void adicionarComposicaoLista(){
+    public void adicionarComposicaoLista(){
 
         AlertDialog.Builder builder  = new AlertDialog.Builder(this);
         builder.setTitle("Composicao dos Itens");
@@ -171,22 +183,20 @@ public class MinhasListasActivity extends ActionBarActivity {
                         }
                     }
                 });
-         builder.show();
+        builder.show();
     }
 
     private void criaLista() {
 
-        listaDaoCriar = new ListaDAO(this);
+        listaDAO = new ListaDAO(this);
         composicaoLista.setNome(input.getText().toString());
-        long resultado = listaDaoCriar.salvarLista(composicaoLista);
+        long resultado = listaDAO.salvarLista(composicaoLista);
         listarListasListView();
     }
 
     public void listarListasListView(){
-        listaDAOLista = new ListaDAO(this);
-        listaList = listaDAOLista.listarListas();
-        if(listaList.isEmpty())
-            return;
+        listaDAO = new ListaDAO(this);
+        listaList = listaDAO.listarListas();
         listaAdapter = new ListaAdapter(this, listaList);
         lvLista = (ListView) findViewById(R.id.lvListas);
         lvLista.setAdapter(listaAdapter);
@@ -231,23 +241,7 @@ public class MinhasListasActivity extends ActionBarActivity {
 
     @Override
     protected void onDestroy() {
-        listaDAOLista.fechar();
-        listaDaoCriar.fechar();
+        listaDAO.fechar();
         super.onDestroy();
     }
-
-    private void montaListaTeste() {
-        //implementacao teste: criar os widgets nesta mesma actiity
-        if(composicaoLista.getIsNumero()==1){
-            texto = new TextView(this);
-            texto.setText("texto");
-            setContentView(texto);
-        }
-        if(composicaoLista.getIsNumero()==1){
-            numero = new TextView(this);
-            numero.setText("numero");
-            setContentView(numero);
-        }
-    }
-
 }

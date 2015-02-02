@@ -5,13 +5,16 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
-    <!--menu tela minhas listas-->
+    <!-- menu tela minhas listas -->
     <string name="adicionarLista">Adicionar Lista</string>
 
-    <!--Botoes-->
+    <!-- Botoes -->
     <string name="criarLista">Criar Lista</string>
     <string name="renomearLista">Renomear</string>
     <string name="cancelar">Cancelar</string>
+    <string name="title_activity_item">ItemActivity</string>
 
-
+    <!--Itens activity-->
+    <string name="oiitem">Esta funcionando o item activity</string>
+    <string name="adicionarItem">Adicionar Item</string>
 </resources>
