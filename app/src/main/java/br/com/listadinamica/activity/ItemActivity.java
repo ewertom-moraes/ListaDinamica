@@ -9,6 +9,7 @@ import android.widget.ListView;
 
 import br.com.listadinamica.adapter.ItemAdapter;
 import br.com.listadinamica.adapter.ListaAdapter;
+import br.com.listadinamica.dao.ItemDAO;
 import br.com.listadinamica.model.Item;
 import br.com.listadinamica.model.Lista;
 import br.com.listadinamica.util.Util;
@@ -18,6 +19,7 @@ public class ItemActivity extends ActionBarActivity {
 
     private Lista lista;
     private Item item;
+    private ItemDAO itemDAO;
     private ItemAdapter itemAdapter;
     private ListView lvItens;
 
@@ -26,9 +28,8 @@ public class ItemActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
-        Bundle bundle = getIntent().getExtras();
-        lista = new Lista(bundle.getInt("idLista"),bundle.getString("nome"),
-                bundle.getInt("isTexto"), bundle.getInt("isNumero"), bundle.getInt("isData"));
+
+        //Util.alerta(this, String.valueOf(bundle.getInt("idLista")));
 
     }
 
@@ -60,10 +61,19 @@ public class ItemActivity extends ActionBarActivity {
     }
 
     private void adicionarItemNaListView() {
-        //precisa de Itemadapter.java
-        itemAdapter = new ItemAdapter(this, lista);
-        lvItens = (ListView) findViewById(R.id.lvItens);
-        lvItens.setAdapter(itemAdapter);
+
+        Bundle bundle = getIntent().getExtras();
+        lista = new Lista(bundle.getInt("idLista"),bundle.getString("nome"),
+                bundle.getInt("isTexto"), bundle.getInt("isNumero"), bundle.getInt("isData"));
+
+        itemDAO = new ItemDAO(this);
+        item.setIdLista(lista.get_id());
+        itemDAO.salvarItem(item);
+
+
+        //itemAdapter = new ItemAdapter(this, lista);
+        //lvItens = (ListView) findViewById(R.id.lvItens);
+        //lvItens.setAdapter(itemAdapter);
     }
 
     @Override

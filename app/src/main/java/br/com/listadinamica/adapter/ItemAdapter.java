@@ -57,7 +57,7 @@ public class ItemAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        //Item item = itens.get(position);
+        Item item = itens.get(position);
 
         if(view == null){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);

@@ -13,6 +13,13 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:layout_marginTop="11dp"/>
+    <TextView
+        android:id="@+id/lista_par"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"/>
     <ListView
         android:id="@+id/lvListas"
         android:layout_width="match_parent"

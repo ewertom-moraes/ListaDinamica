@@ -56,6 +56,10 @@ public class ListaAdapter extends BaseAdapter {
         TextView txtNome = (TextView) view.findViewById(R.id.lista_lista_nome);
         txtNome.setText(listas.getNome());
 
+        TextView parametros = (TextView) view.findViewById(R.id.lista_par);
+        parametros.setText(String.valueOf(listas.getIsTexto()));
+
+
         return view;
     }
 }
