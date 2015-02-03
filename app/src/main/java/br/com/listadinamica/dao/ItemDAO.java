@@ -66,10 +66,13 @@ public class ItemDAO {
                 null, null, null);
 
         List<Item> itens = new ArrayList<Item>();
-        if(!cursor.moveToFirst()) {
+
+        //trecho comentado pois nao tava mostrando
+        // quando query retornava apenas um registro
+        /*if(!cursor.moveToFirst()) {
             cursor.close();
             return null;
-        }
+        }*/
         while(cursor.moveToNext()){
             Item model = criaItem(cursor);
             itens.add(model);
@@ -82,10 +85,19 @@ public class ItemDAO {
 
     public boolean removerItem(Integer id){
 
-        //delete itens where _id= id
+        return getDatabase().delete(DatabaseHelper.Item.TABELA,
+                "_id = ?", new String[]{ Integer.toString(id) }) > 0;
 
-        return true;
     }
+
+    public boolean removerItensLista(Integer idLista){
+
+        return getDatabase().delete(DatabaseHelper.Item.TABELA,
+                "idLista = ?", new String[]{ Integer.toString(idLista) }) > 0;
+
+
+    }
+
 
     public void fechar(){
 

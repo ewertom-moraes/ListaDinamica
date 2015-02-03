@@ -65,10 +65,10 @@ public class ListaDAO {
                 DatabaseHelper.Lista.COLUNAS, null, null, null, null, null);
 
         List<Lista> listas = new ArrayList<Lista>();
-        if(!cursor.moveToFirst()) {
+        /*if(!cursor.moveToFirst()) {
             cursor.close();
             return null;
-        }
+        }*/
         while(cursor.moveToNext()){
             Lista model = criaLista(cursor);
             listas.add(model);
@@ -78,17 +78,22 @@ public class ListaDAO {
 
     }
 
-    public Lista buscarUsuarioPorId(int id){
+    public Lista buscarListaPorId(int id){
         Cursor cursor = getDatabase().query(DatabaseHelper.Lista.TABELA,
                 DatabaseHelper.Lista.COLUNAS, "_id = ?", new String[]{ Integer.toString(id) }, null, null, null);
 
-        if(!cursor.moveToNext()){
+        //trecho comentado pois nao tava mostrando
+        // quando query retornava apenas um registro
+        /*if(!cursor.moveToNext()){
             return null;
-        }
-        Lista model = criaLista(cursor);
-        cursor.close();
-        return model;
+        }*/
 
+        if(cursor.moveToNext()) {
+            Lista model = criaLista(cursor);
+            cursor.close();
+            return model;
+        }
+        return null;
     }
 
     public boolean removerLista(int id){

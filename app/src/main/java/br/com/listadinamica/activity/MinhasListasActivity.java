@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.listadinamica.adapter.ListaAdapter;
+import br.com.listadinamica.dao.ItemDAO;
 import br.com.listadinamica.dao.ListaDAO;
 import br.com.listadinamica.model.Item;
 import br.com.listadinamica.model.Lista;
@@ -72,7 +73,8 @@ public class MinhasListasActivity extends ActionBarActivity {
 
         listaDAO = new ListaDAO(this);
         listaList = listaDAO.listarListas();
-        Lista listaEditar = listaDAO.buscarUsuarioPorId(listaList.get(info.position).get_id());
+        Lista listaEditar = listaDAO.buscarListaPorId(listaList.get(info.position).get_id());
+        if(listaEditar==null) return false;
        // Util.alerta(this, listaEditar.get_id() +", " + listaEditar.getNome()
        //   + ", "+listaEditar.getIsTexto() + ", "+listaEditar.getIsNumero() + ", "+listaEditar.getIsData());
         switch (item.getOrder()){
@@ -90,6 +92,11 @@ public class MinhasListasActivity extends ActionBarActivity {
                 renomearLista(listaEditar);
                 break;
             case 2 :
+                ItemDAO itemDAO = new ItemDAO(this);
+                boolean delete = itemDAO.removerItensLista(listaEditar.get_id());
+                if(delete){
+                    Util.alerta(this , "Deletou os itens da lista");
+                }
                 listaDAO.removerLista(listaEditar.get_id());
                 listarListasListView();
                 break;
@@ -194,6 +201,9 @@ public class MinhasListasActivity extends ActionBarActivity {
     public void listarListasListView(){
         listaDAO = new ListaDAO(this);
         listaList = listaDAO.listarListas();
+        if(listaList==null){
+            return;
+        }
         listaAdapter = new ListaAdapter(this, listaList);
         lvLista = (ListView) findViewById(R.id.lvListas);
         lvLista.setAdapter(listaAdapter);

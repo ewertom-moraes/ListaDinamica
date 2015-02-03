@@ -68,6 +68,7 @@ public class ItemActivity extends ActionBarActivity {
     }
 
     private void listarItensNaActivity(){
+
         Bundle bundle = getIntent().getExtras();
         lista = new Lista(bundle.getInt("idLista"),bundle.getString("nome"),
                 bundle.getInt("isTexto"), bundle.getInt("isNumero"), bundle.getInt("isData"));
@@ -75,12 +76,10 @@ public class ItemActivity extends ActionBarActivity {
         itemDAO = new ItemDAO(this);
         item = new Item();
         item.setIdLista(lista.get_id());
-        //long insert = itemDAO.salvarItem(item);
         itens = itemDAO.listarItensLista(lista.get_id());
         if(itens==null){
             return;
         }
-
         itemAdapter = new ItemAdapter(this, itens ,lista);
         lvItens = (ListView) findViewById(R.id.lvItens);
         lvItens.setAdapter(itemAdapter);
@@ -88,6 +87,10 @@ public class ItemActivity extends ActionBarActivity {
 
 
     private void adicionarItemNaListView() {
+        long insert = itemDAO.salvarItem(item);
+        if(insert!=-1){
+            Util.alerta(this, "adicionado registro com sucesso. id="+insert);
+        }
         listarItensNaActivity();
     }
 
