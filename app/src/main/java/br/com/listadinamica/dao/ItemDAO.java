@@ -2,8 +2,10 @@ package br.com.listadinamica.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.listadinamica.model.Item;
@@ -43,11 +45,37 @@ public class ItemDAO {
         return getDatabase().insert(DatabaseHelper.Item.TABELA, null, valores);
     }
 
+    private Item criaItem(Cursor cursor){
+
+        Item model = new Item(
+                cursor.getInt(cursor.getColumnIndex(DatabaseHelper.Item._ID)),
+                cursor.getInt(cursor.getColumnIndex(DatabaseHelper.Item.IDLISTA)),
+                cursor.getString(cursor.getColumnIndex(DatabaseHelper.Item.TEXTO)),
+                cursor.getString(cursor.getColumnIndex(DatabaseHelper.Item.NUMERO)),
+                cursor.getString(cursor.getColumnIndex(DatabaseHelper.Item.DATA))
+        );
+
+        return model;
+    }
 
     public List<Item> listarItensLista(Integer idLista){
 
         //select itens  where idLista= idLista
-        return null;
+        Cursor cursor = getDatabase().query(DatabaseHelper.Item.TABELA,
+                DatabaseHelper.Item.COLUNAS, "idLista = ?", new String[]{idLista.toString()},
+                null, null, null);
+
+        List<Item> itens = new ArrayList<Item>();
+        if(!cursor.moveToFirst()) {
+            cursor.close();
+            return null;
+        }
+        while(cursor.moveToNext()){
+            Item model = criaItem(cursor);
+            itens.add(model);
+        }
+        cursor.close();
+        return itens;
     }
 
 

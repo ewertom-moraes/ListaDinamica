@@ -11,6 +11,8 @@ public class Item {
     private String numero;
     private String data;
 
+    public Item(){}
+
     public Item(Integer _id, Integer idLista, String texto
                 , String numero, String data){
         this.set_id(_id);

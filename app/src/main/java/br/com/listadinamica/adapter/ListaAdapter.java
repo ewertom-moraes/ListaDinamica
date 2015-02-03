@@ -50,14 +50,15 @@ public class ListaAdapter extends BaseAdapter {
 
         if(view == null){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.activity_minhas_listas , null);
+            view = inflater.inflate(R.layout.lv_listas , null);
         }
 
-        TextView txtNome = (TextView) view.findViewById(R.id.lista_lista_nome);
+        TextView txtNome = (TextView) view.findViewById(R.id.lista_nome);
         txtNome.setText(listas.getNome());
 
         TextView parametros = (TextView) view.findViewById(R.id.lista_par);
-        parametros.setText(String.valueOf(listas.getIsTexto()));
+        parametros.setText(String.valueOf(listas.getIsTexto()+", "+
+                listas.getIsNumero()+", "+ listas.getIsData()+", "));
 
 
         return view;

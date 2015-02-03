@@ -27,9 +27,6 @@ import br.com.listadinamica.util.Util;
 
 public class MinhasListasActivity extends ActionBarActivity {
 
-
-
-
     // variaveis para criacao
     private AlertDialog alerta;
     private EditText input;

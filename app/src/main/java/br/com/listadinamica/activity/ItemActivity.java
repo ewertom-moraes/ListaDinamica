@@ -5,7 +5,14 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import br.com.listadinamica.adapter.ItemAdapter;
 import br.com.listadinamica.adapter.ListaAdapter;
@@ -22,14 +29,14 @@ public class ItemActivity extends ActionBarActivity {
     private ItemDAO itemDAO;
     private ItemAdapter itemAdapter;
     private ListView lvItens;
+    private List<Item> itens;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
-
-        //Util.alerta(this, String.valueOf(bundle.getInt("idLista")));
+        listarItensNaActivity();
 
     }
 
@@ -60,20 +67,48 @@ public class ItemActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void adicionarItemNaListView() {
-
+    private void listarItensNaActivity(){
         Bundle bundle = getIntent().getExtras();
         lista = new Lista(bundle.getInt("idLista"),bundle.getString("nome"),
                 bundle.getInt("isTexto"), bundle.getInt("isNumero"), bundle.getInt("isData"));
 
         itemDAO = new ItemDAO(this);
+        item = new Item();
         item.setIdLista(lista.get_id());
-        itemDAO.salvarItem(item);
+        //long insert = itemDAO.salvarItem(item);
+        itens = itemDAO.listarItensLista(lista.get_id());
+        if(itens==null){
+            return;
+        }
+
+        itemAdapter = new ItemAdapter(this, itens ,lista);
+        lvItens = (ListView) findViewById(R.id.lvItens);
+        lvItens.setAdapter(itemAdapter);
+    }
 
 
-        //itemAdapter = new ItemAdapter(this, lista);
-        //lvItens = (ListView) findViewById(R.id.lvItens);
-        //lvItens.setAdapter(itemAdapter);
+    private void adicionarItemNaListView() {
+        listarItensNaActivity();
+    }
+
+    private List<View> defineComponentesListView(Lista lista) {
+        List<View> listaLv = new ArrayList<View>();
+
+        listaLv.add(new CheckBox(this));
+
+        if(lista.getIsTexto()==1){
+            listaLv.add(new TextView(this));
+        }
+
+        if(lista.getIsNumero()==1){
+            listaLv.add(new TextView(this));
+        }
+
+        if(lista.getIsData()==1){
+            listaLv.add(new TextView(this));
+        }
+
+        return listaLv;
     }
 
     @Override

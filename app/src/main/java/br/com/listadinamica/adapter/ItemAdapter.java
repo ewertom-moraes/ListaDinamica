@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.TextView;
 
 import java.util.List;
@@ -35,9 +36,10 @@ public class ItemAdapter extends BaseAdapter {
     }
 
 
-    public ItemAdapter(Context ctx, Lista lista){
+    public ItemAdapter(Context ctx,  List<Item> itens, Lista lista){
         this.context = ctx;
         this.lista = lista;
+        this.itens = itens;
     }
 
     @Override
@@ -61,7 +63,8 @@ public class ItemAdapter extends BaseAdapter {
 
         if(view == null){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.activity_item , null);
+            view = inflater.inflate(R.layout.lv_itens , null);
+            //INFLATE É O CONTEUDO DO LISTVIEW, OS COMPONENTES...
         }
 
 
@@ -70,15 +73,14 @@ public class ItemAdapter extends BaseAdapter {
 
         if(this.lista.getIsTexto()==1) {
             TextView texto = (TextView) view.findViewById(R.id.item_texto);
-            //texto.setText(item.getTexto());
+            texto.setText("Texto do item");
         }
         if(this.lista.getIsNumero()==1) {
             TextView numero = (TextView) view.findViewById(R.id.item_numero);
-            //numero.setText(item.getNumero());
+            numero.setText("256,00");
         }
 //        if(this.lista.getIsTexto()==1) {
-//            TextView data = (TextView) view.findViewById(R.id.item_data);
-//            data.setText(item.getData());
+//            DatePicker data = (DatePicker) view.findViewById(R.id.item_data);
 //        }
 
         return view;
