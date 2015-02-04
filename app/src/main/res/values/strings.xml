@@ -5,6 +5,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+
     <!-- menu tela minhas listas -->
     <string name="adicionarLista">Adicionar Lista</string>
 
@@ -18,4 +19,5 @@
     <string name="oiitem">Esta funcionando o item activity</string>
     <string name="adicionarItem">Adicionar Item</string>
     <string name="selecione">Data</string>
+    <string name="salvar_itens">Salvar Lista</string>
 </resources>

@@ -62,7 +62,7 @@ public class ItemAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         Item item = itens.get(position);
-
+        item.setIdLista(lista.get_id());
         if(view == null){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.lv_itens , null);
@@ -70,15 +70,18 @@ public class ItemAdapter extends BaseAdapter {
         }
 
         CheckBox ok = (CheckBox) view.findViewById(R.id.item_ok);
-        ok.setChecked(false);
+        //ok.setChecked(false);
 
+        //item.setTexto("texto do item no objeto");
+        //item.setNumero("256");
         if(this.lista.getIsTexto()==1) {
             EditText texto = (EditText) view.findViewById(R.id.item_texto);
-            texto.setText("Texto do item");
+           //texto.setText(item.getTexto());
+            item.setTexto(texto.getText().toString());
         }
         if(this.lista.getIsNumero()==1) {
             TextView numero = (TextView) view.findViewById(R.id.item_numero);
-            numero.setText("256,00");
+           // item.setNumero(numero.getText().toString());
         }
         if(this.lista.getIsTexto()==1) {
             Button data = (Button) view.findViewById(R.id.dataItem);

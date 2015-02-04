@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -62,11 +63,13 @@ public class ItemActivity extends ActionBarActivity {
 
         if(id == R.id.adicionar_item){
             adicionarItemNaListView();
+            return true;
         }
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.salvar_itens) {
             salvarItensDaListView();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -91,11 +94,6 @@ public class ItemActivity extends ActionBarActivity {
     }
 
     private void adicionarItemNaListView() {
-        /*/long insert = itemDAO.salvarItem(item);
-        if(insert!=-1){
-            Util.alerta(this, "adicionado registro com sucesso. id="+insert);
-        }*/
-        //listarItensNaActivity();
         insereCoponenteListView(lista);
     }
 
@@ -109,8 +107,19 @@ public class ItemActivity extends ActionBarActivity {
 
     public void salvarItensDaListView(){
 
-        Item itemPego = (Item) itemAdapter.getItem(0);
-        Util.alerta(this, "Pegou item da listview texto="+itemPego.getTexto());
+        ListAdapter listAdapter = lvItens.getAdapter();
+        int contagem = listAdapter.getCount();
+        //Item itemRecuperado  = (Item) listAdapter.getItem(1);
+        int i = 0;
+        while(i<contagem){
+            if(listAdapter.isEnabled(i)){
+                Item itemASalvar = (Item) listAdapter.getItem(i);
+                long resultado = itemDAO.salvarItem(itemASalvar);
+            }
+            i++;
+        }
+        listarItensNaActivity();
+       // Util.alerta(this, "contagem=" + contagem+" itemtoString="+itemRecuperado.getTexto());
     }
 
     public void selecionarData(View view){
