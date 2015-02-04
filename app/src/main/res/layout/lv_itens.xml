@@ -12,23 +12,26 @@
         android:textSize="18sp"
         android:textStyle="bold"/>
 
-    <TextView
+    <EditText
         android:id="@+id/item_texto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:textStyle="bold"/>
-    <TextView
+    <EditText
         android:id="@+id/item_numero"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:textStyle="bold"/>
-    <!--<DatePicker
-        android:id="@+id/item_data"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        </DatePicker>
--->
+        android:textStyle="bold"
+        android:inputType="number"/>
+
+    <Button
+        android:id="@+id/dataItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:onClick="selecionarData"
+        android:text="@string/selecione" />
 
 </LinearLayout>

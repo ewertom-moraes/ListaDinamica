@@ -1,16 +1,23 @@
 package br.com.listadinamica.activity;
 
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +38,6 @@ public class ItemActivity extends ActionBarActivity {
     private ListView lvItens;
     private List<Item> itens;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +45,6 @@ public class ItemActivity extends ActionBarActivity {
         listarItensNaActivity();
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -61,7 +66,7 @@ public class ItemActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            salvarItensDaListView();
         }
 
         return super.onOptionsItemSelected(item);
@@ -85,33 +90,31 @@ public class ItemActivity extends ActionBarActivity {
         lvItens.setAdapter(itemAdapter);
     }
 
-
     private void adicionarItemNaListView() {
-        long insert = itemDAO.salvarItem(item);
+        /*/long insert = itemDAO.salvarItem(item);
         if(insert!=-1){
             Util.alerta(this, "adicionado registro com sucesso. id="+insert);
-        }
-        listarItensNaActivity();
+        }*/
+        //listarItensNaActivity();
+        insereCoponenteListView(lista);
     }
 
-    private List<View> defineComponentesListView(Lista lista) {
-        List<View> listaLv = new ArrayList<View>();
+    private void insereCoponenteListView(Lista lista){
+        Item itemNovo = new Item();
+        item.setIdLista(lista.get_id());
+        itens.add(itemNovo);
+        itemAdapter.notifyDataSetChanged();
 
-        listaLv.add(new CheckBox(this));
+    }
 
-        if(lista.getIsTexto()==1){
-            listaLv.add(new TextView(this));
-        }
+    public void salvarItensDaListView(){
 
-        if(lista.getIsNumero()==1){
-            listaLv.add(new TextView(this));
-        }
+        Item itemPego = (Item) itemAdapter.getItem(0);
+        Util.alerta(this, "Pegou item da listview texto="+itemPego.getTexto());
+    }
 
-        if(lista.getIsData()==1){
-            listaLv.add(new TextView(this));
-        }
-
-        return listaLv;
+    public void selecionarData(View view){
+        showDialog(view.getId());
     }
 
     @Override

@@ -10,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.List;
@@ -67,21 +69,20 @@ public class ItemAdapter extends BaseAdapter {
             //INFLATE É O CONTEUDO DO LISTVIEW, OS COMPONENTES...
         }
 
-
         CheckBox ok = (CheckBox) view.findViewById(R.id.item_ok);
         ok.setChecked(false);
 
         if(this.lista.getIsTexto()==1) {
-            TextView texto = (TextView) view.findViewById(R.id.item_texto);
+            EditText texto = (EditText) view.findViewById(R.id.item_texto);
             texto.setText("Texto do item");
         }
         if(this.lista.getIsNumero()==1) {
             TextView numero = (TextView) view.findViewById(R.id.item_numero);
             numero.setText("256,00");
         }
-//        if(this.lista.getIsTexto()==1) {
-//            DatePicker data = (DatePicker) view.findViewById(R.id.item_data);
-//        }
+        if(this.lista.getIsTexto()==1) {
+            Button data = (Button) view.findViewById(R.id.dataItem);
+        }
 
         return view;
     }

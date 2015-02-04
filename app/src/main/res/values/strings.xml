@@ -17,4 +17,5 @@
     <!--Itens activity-->
     <string name="oiitem">Esta funcionando o item activity</string>
     <string name="adicionarItem">Adicionar Item</string>
+    <string name="selecione">Data</string>
 </resources>
