@@ -107,20 +107,24 @@ public class ItemActivity extends ActionBarActivity {
 
     public void salvarItensDaListView(){
 
+
         ListAdapter listAdapter = lvItens.getAdapter();
+        //nao ta pegando os valores digitados naquele instante na lv. só pega quando ja ta gravado e vem do bd
         int contagem = listAdapter.getCount();
-        int i = 1;
+        int i = 0;
         long resultado = 0;
-        while(i<=contagem){
+        while(i<contagem){
             Item itemASalvar = (Item) listAdapter.getItem(i);
             itemASalvar.setIdLista(lista.get_id());
             resultado = itemDAO.salvarItem(itemASalvar);
             i++;
         }
-       // Util.alerta(this, "contagem=" + contagem+" ultimo id salvo="+ resultado);
+        //Util.alerta(this, "contagem=" + contagem+" ultimo id salvo="+ resultado);
+
+
+        Item itemRecuperado  = (Item) listAdapter.getItem(1);
+        Util.alerta(this, "contagem=" + contagem+" itemtoString="+itemRecuperado.getTexto());
         listarItensNaActivity();
-       //Item itemRecuperado  = (Item) listAdapter.getItem(1);
-      // Util.alerta(this, "contagem=" + contagem+" itemtoString="+itemRecuperado.getTexto());
     }
 
     public void selecionarData(View view){

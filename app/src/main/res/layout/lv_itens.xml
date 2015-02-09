@@ -5,34 +5,48 @@
     android:padding="10dp"
     android:background="#FFF">
 
-    <CheckBox
-        android:id="@+id/item_ok"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"/>
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:background="#FFF">
 
-    <EditText
-        android:id="@+id/item_texto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:inputType="textNoSuggestions"/>
-    <EditText
-        android:id="@+id/item_numero"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:inputType="number"/>
+        <CheckBox
+            android:id="@+id/item_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/item_texto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:inputType="textNoSuggestions"
+            android:text="Texto do item e tal"/>
+        <EditText
+            android:id="@+id/item_numero"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_weight="3"
+            android:textStyle="bold"
+            android:inputType="number"
+            android:text="155151"/>
+
+    </LinearLayout>
+
 
     <Button
         android:id="@+id/dataItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_gravity="right"
         android:onClick="selecionarData"
-        android:text="@string/selecione" />
+        android:text="@string/selecione"
+        />
 
 </LinearLayout>

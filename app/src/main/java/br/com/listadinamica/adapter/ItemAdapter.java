@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import br.com.listadinamica.activity.ItemActivity;
 import br.com.listadinamica.activity.R;
 import br.com.listadinamica.model.Item;
 import br.com.listadinamica.model.Lista;
+import br.com.listadinamica.util.Util;
 
 /**
  * Created by thiagoporto on 21/12/14.
@@ -93,20 +95,19 @@ public class ItemAdapter extends BaseAdapter implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
-        itens.get(listPosititon).setTexto(s.toString());
-        itens.get(listPosititon).setNumero(s.toString());
+        Log.i("AQUI O LOG DO AFTER CHANGED!!!!!!!!!!!!!!", s.toString());
     }
 
     @Override
     public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
                                   int arg3) {
-        // TODO Auto-generated method stub
+        Log.i("AQUI O LOG DO AFTER BEFORE!!!!!!!!!!!!!!", s.toString());
 
     }
 
     @Override
     public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-        // TODO Auto-generated method stub
+        Log.i("AQUI O LOG DO ON CHANGE CHANGED!!!!!!!!!!!!!!", s.toString());
 
     }
 
