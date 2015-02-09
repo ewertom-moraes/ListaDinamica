@@ -6,6 +6,8 @@ package br.com.listadinamica.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,11 +28,13 @@ import br.com.listadinamica.model.Lista;
 /**
  * Created by thiagoporto on 21/12/14.
  */
-public class ItemAdapter extends BaseAdapter {
+public class ItemAdapter extends BaseAdapter implements TextWatcher {
 
     private Context context;
     private List<Item> itens;
     private Lista lista;
+    int listPosititon;
+
 
     public ItemAdapter(Context ctx, List<Item> item){
         this.context = ctx;
@@ -61,8 +65,10 @@ public class ItemAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
+        listPosititon = position;
         Item item = itens.get(position);
-        item.setIdLista(lista.get_id());
+
+        //item.setIdLista(lista.get_id());
         if(view == null){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.lv_itens , null);
@@ -70,23 +76,39 @@ public class ItemAdapter extends BaseAdapter {
         }
 
         CheckBox ok = (CheckBox) view.findViewById(R.id.item_ok);
-        //ok.setChecked(false);
 
-        //item.setTexto("texto do item no objeto");
-        //item.setNumero("256");
         if(this.lista.getIsTexto()==1) {
             EditText texto = (EditText) view.findViewById(R.id.item_texto);
-           //texto.setText(item.getTexto());
-            item.setTexto(texto.getText().toString());
+            texto.setText(item.getTexto());
         }
         if(this.lista.getIsNumero()==1) {
             TextView numero = (TextView) view.findViewById(R.id.item_numero);
-           // item.setNumero(numero.getText().toString());
+            numero.setText(item.getNumero());
         }
-        if(this.lista.getIsTexto()==1) {
-            Button data = (Button) view.findViewById(R.id.dataItem);
-        }
+
 
         return view;
     }
+
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        itens.get(listPosititon).setTexto(s.toString());
+        itens.get(listPosititon).setNumero(s.toString());
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                  int arg3) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+        // TODO Auto-generated method stub
+
+    }
+
+
 }

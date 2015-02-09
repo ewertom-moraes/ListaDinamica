@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.database.DataSetObserver;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -82,8 +84,6 @@ public class ItemActivity extends ActionBarActivity {
                 bundle.getInt("isTexto"), bundle.getInt("isNumero"), bundle.getInt("isData"));
 
         itemDAO = new ItemDAO(this);
-        item = new Item();
-        item.setIdLista(lista.get_id());
         itens = itemDAO.listarItensLista(lista.get_id());
         if(itens==null){
             return;
@@ -99,27 +99,28 @@ public class ItemActivity extends ActionBarActivity {
 
     private void insereCoponenteListView(Lista lista){
         Item itemNovo = new Item();
-        item.setIdLista(lista.get_id());
         itens.add(itemNovo);
         itemAdapter.notifyDataSetChanged();
 
     }
 
+
     public void salvarItensDaListView(){
 
         ListAdapter listAdapter = lvItens.getAdapter();
         int contagem = listAdapter.getCount();
-        //Item itemRecuperado  = (Item) listAdapter.getItem(1);
-        int i = 0;
-        while(i<contagem){
-            if(listAdapter.isEnabled(i)){
-                Item itemASalvar = (Item) listAdapter.getItem(i);
-                long resultado = itemDAO.salvarItem(itemASalvar);
-            }
+        int i = 1;
+        long resultado = 0;
+        while(i<=contagem){
+            Item itemASalvar = (Item) listAdapter.getItem(i);
+            itemASalvar.setIdLista(lista.get_id());
+            resultado = itemDAO.salvarItem(itemASalvar);
             i++;
         }
+       // Util.alerta(this, "contagem=" + contagem+" ultimo id salvo="+ resultado);
         listarItensNaActivity();
-       // Util.alerta(this, "contagem=" + contagem+" itemtoString="+itemRecuperado.getTexto());
+       //Item itemRecuperado  = (Item) listAdapter.getItem(1);
+      // Util.alerta(this, "contagem=" + contagem+" itemtoString="+itemRecuperado.getTexto());
     }
 
     public void selecionarData(View view){
