@@ -25,8 +25,7 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_weight="1"
-            android:inputType="textNoSuggestions"
-            android:text="Texto do item e tal"/>
+            android:inputType="textNoSuggestions"/>
         <EditText
             android:id="@+id/item_numero"
             android:layout_width="match_parent"
@@ -34,8 +33,7 @@
             android:textSize="18sp"
             android:layout_weight="3"
             android:textStyle="bold"
-            android:inputType="number"
-            android:text="155151"/>
+            android:inputType="number"/>
 
     </LinearLayout>
 

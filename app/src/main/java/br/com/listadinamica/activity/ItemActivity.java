@@ -1,9 +1,13 @@
 package br.com.listadinamica.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.InputType;
+import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,8 +20,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import java.lang.reflect.Array;
@@ -68,12 +74,6 @@ public class ItemActivity extends ActionBarActivity {
             return true;
         }
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.salvar_itens) {
-            salvarItensDaListView();
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -94,8 +94,53 @@ public class ItemActivity extends ActionBarActivity {
     }
 
     private void adicionarItemNaListView() {
-        insereCoponenteListView(lista);
+        abreDialogItem(lista);
     }
+
+    private void abreDialogItem(final Lista lista) {
+
+        AlertDialog.Builder builderItem  = new AlertDialog.Builder(this);
+        builderItem.setTitle("Novo Item");
+        final EditText inputTexto = new EditText(this);
+        final EditText inputNumero = new EditText(this);
+        inputNumero.setInputType(InputType.TYPE_NUMBER_VARIATION_NORMAL);
+        final EditText inputData = new EditText(this);
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        boolean [] cfg = new int[3];
+        // falta manipular a view pra colocar somente os coponenentes necessarios
+        if(lista.getIsTexto()==1)
+            cfg[0]=1;
+             builderItem.setView(inflater.inflate(R.layout.novo_item_texto, null));
+        if(lista.getIsNumero()==1)
+            builderItem.setView(inflater.inflate(R.layout.novo_item_numero, null));
+        if(lista.getIsData()==1);;
+
+
+
+
+        builderItem.setPositiveButton(R.string.salvarItem,new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Item itemNovo = new Item(0,lista.get_id(),inputTexto.getText().toString(),
+                        inputNumero.getText().toString(),inputData.getText().toString());
+                salvarItem(itemNovo);
+                listarItensNaActivity();
+            }
+        });
+        builderItem.setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // do nothing
+            }
+        });
+        builderItem.show();
+    }
+
+    private void salvarItem(Item itemASalvar){
+        itemDAO.salvarItem(itemASalvar);
+    }
+
+
+
 
     private void insereCoponenteListView(Lista lista){
         Item itemNovo = new Item();
@@ -107,7 +152,6 @@ public class ItemActivity extends ActionBarActivity {
 
     public void salvarItensDaListView(){
 
-        lvItens = (ListView) findViewById(R.id.lvItens);
         ListAdapter listAdapter = lvItens.getAdapter();
         int contagem = listAdapter.getCount();
         int i = 0;

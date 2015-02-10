@@ -14,10 +14,18 @@
     <string name="renomearLista">Renomear</string>
     <string name="cancelar">Cancelar</string>
     <string name="title_activity_item">ItemActivity</string>
+    <string name="salvarItem">Salvar Item</string>
 
     <!--Itens activity-->
     <string name="oiitem">Esta funcionando o item activity</string>
     <string name="adicionarItem">Adicionar Item</string>
     <string name="selecione">Data</string>
-    <string name="salvar_itens">Salvar Lista</string>
+    <string name="salvar_itens">Salvar Itens</string>
+
+
+
+
+
+
+
 </resources>
