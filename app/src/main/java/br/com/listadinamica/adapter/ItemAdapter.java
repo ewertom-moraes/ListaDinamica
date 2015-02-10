@@ -88,7 +88,6 @@ public class ItemAdapter extends BaseAdapter implements TextWatcher {
             numero.setText(item.getNumero());
         }
 
-
         return view;
     }
 
@@ -101,13 +100,11 @@ public class ItemAdapter extends BaseAdapter implements TextWatcher {
     @Override
     public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
                                   int arg3) {
-        Log.i("AQUI O LOG DO AFTER BEFORE!!!!!!!!!!!!!!", s.toString());
 
     }
 
     @Override
     public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-        Log.i("AQUI O LOG DO ON CHANGE CHANGED!!!!!!!!!!!!!!", s.toString());
 
     }
 

@@ -107,9 +107,8 @@ public class ItemActivity extends ActionBarActivity {
 
     public void salvarItensDaListView(){
 
-
+        lvItens = (ListView) findViewById(R.id.lvItens);
         ListAdapter listAdapter = lvItens.getAdapter();
-        //nao ta pegando os valores digitados naquele instante na lv. só pega quando ja ta gravado e vem do bd
         int contagem = listAdapter.getCount();
         int i = 0;
         long resultado = 0;
@@ -120,8 +119,6 @@ public class ItemActivity extends ActionBarActivity {
             i++;
         }
         //Util.alerta(this, "contagem=" + contagem+" ultimo id salvo="+ resultado);
-
-
         Item itemRecuperado  = (Item) listAdapter.getItem(1);
         Util.alerta(this, "contagem=" + contagem+" itemtoString="+itemRecuperado.getTexto());
         listarItensNaActivity();
